@@ -20,6 +20,8 @@ const (
 	dense
 )
 
+var beta_infinity = math.Sqrt(3*math.Log(2) - 1)
+
 // ErrInsufficientBytes is returned by FromBytes in cases where the provided
 // byte slice is truncated.
 var ErrInsufficientBytes = errors.New("insufficient bytes to deserialize Hll")
@@ -228,6 +230,19 @@ func (h *Hll) Cardinality() uint64 {
 	default:
 		// nil case.
 		return 0
+	}
+}
+
+// Returns estimate of absolute_value(estimate_distinct_count - real_distinct_count) / real_distinct_count
+func (h *Hll) RelativeError() float64 {
+	switch h.storage.(type) {
+	case explicitStorage:
+		return 0.0
+	case sparseStorage, denseStorage:
+		m := 1 << uint(h.settings.log2m)
+		return beta_infinity / math.Sqrt(float64(m))
+	default: // Hll is empty
+		return 0.0
 	}
 }
 

@@ -1,101 +1,15 @@
-# go-hll ![Build and Test](https://github.com/segmentio/go-hll/actions/workflows/build-and-test.yml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/go-hll)](https://goreportcard.com/report/github.com/segmentio/go-hll) [![GoDoc](https://godoc.org/github.com/segmentio/go-hll?status.svg)](https://godoc.org/github.com/segmentio/go-hll)
+<h1 align="center">GitHub Archive Notification</h1>
 
-A Go implementation of [HyperLogLog](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf) that is
-storage-compatible with the [Aggregate Knowledge HLL Storage Spec](https://github.com/aggregateknowledge/hll-storage-spec).
+<div align="center">
 
-## Overview
-HyperLogLog (HLL) is a fixed-size, set-like structure used for distinct value counting with tunable precision. For
-example, in 1280 bytes HLL can estimate the count of tens of billions of distinct values with only a few percent error.
+*Today, we’re officially archiving this project. First and foremost, Thank You.*
 
-In addition to the algorithm proposed in the [original paper](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf),
-this implementation is augmented to improve its accuracy and memory use without sacrificing much speed.
+*What started as an idea grew into something much bigger because of this community. Your pull requests, bug reports, feature suggestions, stars, blog posts, tweets, and words of encouragement made this project what it is. The trust you placed in us and the time you invested here truly meant a lot.*
 
-## Motivation
-While there are a handful of existing HLL implementations in Go, none of them implement the AK Storage Spec.   
-The unified storage format is useful for reading and writing HLLs in a multi-lingual environment.  At Segment, most of 
-our runtime code is written in Go, but we frequently persist data to PostgreSQL for long-term storage.  The Postgres HLL 
-plugin is fairly ubiquitous--it's available for the standalone server, AWS RDS, AWS Aurora, and CitusDB.
+*As we focus on something new, the repository will remain available in read-only mode for anyone who finds it useful. If you’d like to fork it, build on it, or take it in a new direction, we wholeheartedly encourage that. We are also changing the license to a more permissive Apache 2.0 license.*
 
-An excellent description for the motivation behind the storage strategy can be found in the [Java HLL 
-library's README](https://github.com/aggregateknowledge/java-hll#motivation).
+*Open source is about shared learning and shared progress — and we’re deeply grateful to have been part of that journey with you.*
 
-## Hashing
-A good hashing algorithm is crucial to achieving the pseudorandomness that HLL requires in order to perform its 
-calculations.  The 64 bit variant of [MurmurHash3](https://github.com/spaolacci/murmur3) is recommended.  If using a 
-seed, it must be constant for all inputs to a given HLL.  Further, if that HLL is to be unioned, then the same seed must
-be used for all inputs to the other HLL.
+*Thank you again for the support and the collaboration.*
 
-See the [Java HLL README](https://github.com/aggregateknowledge/java-hll#the-importance-of-hashing) for a discussion on 
-why MurmurHash3 is a good choice.
-
-## Adaptations to Go
-The API is intended to be as similar as possible to [Java HLL](https://github.com/aggregateknowledge/java-hll) and
-[Postgresql HLL](https://github.com/aggregateknowledge/postgresql-hll).  There are a couple of features, though,
-that make it more friendly to Go Programmers.
-
-### Zero Value
-If default settings are specified using the `hll.Defaults` function, the zero value can be used directly as an empty HLL.
-
-Since its impossible to reason about an HLL without the settings, operations on a zero value in lieu of default settings 
-will panic.
-
-### StrictUnion
-The other HLL implementations allow for two HLLs to be union-ed even if their log2m or regwidth parameters differ.
-However, doing so can produce wildly inaccurate results.  This library provides an additional `StrictUnion` operation 
-that will return an error if attempting a union on HLLs with incompatible settings.
-
-## Building
-Dependencies are managed with [Go Modules](https://blog.golang.org/using-go-modules).  Accordingly, this project
-requires Go version 1.12 or later.
-
-### Test
-```make test```
-
-## Usage
-```go
-package main 
-
-import (
-	"fmt"
-	
-	"github.com/segmentio/go-hll"
-)
-
-func main() {
-	
-	// install default settings.
-	hll.Defaults(hll.Settings{
-		Log2m: 10,
-		Regwidth: 4,
-		ExplicitThreshold: hll.AutoExplicitThreshold,
-		SparseEnabled: true,
-	})
-	
-	// add elements.
-	h := hll.Hll{}
-	h.AddRaw(123456789)
-	fmt.Print(h.Cardinality())  // prints "1"
-	
-	// union Hlls
-	h2 := hll.Hll{}
-	h2.AddRaw(123456789)
-	h2.AddRaw(987654321)
-	h2.Union(h)
-	fmt.Print(h2.Cardinality()) // prints "2"
- 
-	// write to/read from bytes. 
-	h3, _ := hll.FromBytes(h2.ToBytes())
-	fmt.Print(h3.Cardinality()) // prints "2"
-}
-```
-
-There is a compatibility battery run as part of the unit tests.  The battery was produced by the 
-[Test Generator](https://github.com/aggregateknowledge/java-hll/blob/master/src/test/java/net/agkn/hll/IntegrationTestGenerator.java)
-in the java-hll package.
-
-## Additional Resources
-* [HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf)
-* [Understanding the HyperLogLog](https://pdfs.semanticscholar.org/75ba/51ffd9d2bed8a65029c9340d058f587059da.pdf)
-
-## License
-Released under the [MIT license](License.md).
+</div>

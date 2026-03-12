@@ -14,8 +14,6 @@
 
 </div>
 
-<hr>
-
 # go-hll ![Build and Test](https://github.com/segmentio/go-hll/actions/workflows/build-and-test.yml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/go-hll)](https://goreportcard.com/report/github.com/segmentio/go-hll) [![GoDoc](https://godoc.org/github.com/segmentio/go-hll?status.svg)](https://godoc.org/github.com/segmentio/go-hll)
 
 A Go implementation of [HyperLogLog](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf) that is
